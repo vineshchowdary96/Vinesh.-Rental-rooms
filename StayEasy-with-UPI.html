@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StayEasy — Budget Hotels &amp; Rooms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+
+
+.app-shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+main { flex: 1 1 0%; }
+
+.section { padding: 40px 20px; }
+
+.section-title { font-size: 24px; font-weight: 700; margin-bottom: 18px; }
+
+.section-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+
+.see-all { color: var(--primary); font-weight: 600; }
+
+.navbar { background: rgb(255, 255, 255); border-bottom: 1px solid var(--border); position: sticky; top: 0px; z-index: 50; }
+
+.navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+
+.brand { font-size: 22px; font-weight: 800; color: var(--secondary); }
+
+.brand-mark { color: var(--primary); }
+
+.nav-links { display: flex; align-items: center; gap: 26px; font-weight: 500; }
+
+.nav-links a { position: relative; color: var(--text); }
+
+.badge { background: var(--primary); color: white; border-radius: 999px; font-size: 11px; padding: 1px 6px; margin-left: 4px; }
+
+.nav-user { display: flex; align-items: center; gap: 10px; }
+
+.nav-user-name { font-weight: 600; }
+
+.link-btn { background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; color: var(--primary); font-weight: 600; }
+
+.hamburger { display: none; flex-direction: column; gap: 4px; background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; }
+
+.hamburger span { width: 22px; height: 2px; background: var(--secondary); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 22px; border-radius: 8px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; font-weight: 600; font-size: 15px; transition: transform 0.1s, opacity 0.2s; }
+
+.btn:active { transform: scale(0.98); }
+
+.btn-primary { background: var(--primary); color: white; }
+
+.btn-primary:hover { background: var(--primary-dark); }
+
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secondary { background: rgb(255, 255, 255); color: var(--primary); border: 1.5px solid var(--primary); }
+
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+.btn-block { width: 100%; }
+
+.hero { background: linear-gradient(135deg, rgb(238, 44, 91) 0%, rgb(255, 118, 118) 100%); padding: 56px 0px 90px; color: white; }
+
+.hero-inner h1 { font-size: 36px; font-weight: 800; max-width: 640px; }
+
+.hero-inner p { margin: 10px 0px 26px; opacity: 0.95; font-size: 16px; }
+
+.search-bar { background: rgb(255, 255, 255); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr auto; gap: 12px; box-shadow: rgba(0, 0, 0, 0.15) 0px 12px 30px; }
+
+.search-bar.compact { margin-bottom: 24px; }
+
+.search-field { display: flex; flex-direction: column; gap: 4px; }
+
+.search-field label { font-size: 12px; color: var(--text-light); font-weight: 600; }
+
+.search-field select, .search-field input { border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 14px; color: var(--text); }
+
+.search-btn { align-self: end; }
+
+.city-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px; }
+
+.city-card { background: none; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+.city-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 12px; }
+
+.city-card span { font-weight: 600; font-size: 14px; }
+
+.hotel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.hotel-card { background: var(--card-bg); border-radius: 14px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 10px; transition: transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; }
+
+.hotel-card:hover { transform: translateY(-3px); box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 24px; }
+
+.hotel-card-img-wrap { position: relative; height: 160px; }
+
+.hotel-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+.wishlist-btn { position: absolute; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.9); border-width: medium; border-style: none; border-color: currentcolor; border-image: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; color: var(--primary); }
+
+.wishlist-btn.active { color: var(--primary); }
+
+.discount-tag { position: absolute; bottom: 10px; left: 10px; background: var(--success); color: white; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+
+.hotel-card-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 0%; }
+
+.hotel-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+
+.hotel-card-top h3 { font-size: 16px; font-weight: 700; line-height: 1.3; }
+
+.rating-pill { background: var(--secondary); color: white; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+
+.star { color: rgb(255, 213, 79); }
+
+.hotel-card-address { color: var(--text-light); font-size: 13px; }
+
+.hotel-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0px; }
+
+.tag { background: rgb(241, 242, 246); color: var(--text-light); font-size: 11px; padding: 3px 8px; border-radius: 6px; }
+
+.tag-highlight { background: rgb(253, 231, 236); color: var(--primary); font-weight: 600; }
+
+.hotel-card-bottom { margin-top: auto; display: flex; align-items: baseline; justify-content: space-between; padding-top: 6px; }
+
+.price-block { display: flex; align-items: baseline; gap: 6px; }
+
+.price-old { text-decoration: line-through; color: var(--text-light); font-size: 13px; }
+
+.price-new { font-size: 18px; font-weight: 800; color: var(--secondary); }
+
+.price-note { font-size: 11px; color: var(--text-light); }
+
+.reviews-note { font-size: 12px; color: var(--text-light); }
+
+.perks-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+
+.perk-card { background: rgb(255, 255, 255); border-radius: 12px; padding: 22px; text-align: center; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px; }
+
+.perk-emoji { font-size: 28px; }
+
+.perk-card h4 { margin: 10px 0px 6px; }
+
+.perk-card p { font-size: 13px; color: var(--text-light); }
+
+.listings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+
+.sort-select { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); }
+
+.listings-layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+
+.listings-grid { grid-template-columns: repeat(3, 1fr); }
+
+.filters-panel { background: rgb(255, 255, 255); border-radius: 12px; padding: 18px; height: fit-content; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px; }
+
+.filters-panel h3 { margin-bottom: 14px; }
+
+.filter-group { margin-bottom: 20px; }
+
+.filter-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+
+.filter-group input[type="range"] { width: 100%; }
+
+.rating-filter-row, .type-filter-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.rating-chip { border: 1px solid var(--border); background: rgb(255, 255, 255); padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+
+.rating-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+.empty-state { color: var(--text-light); padding: 40px 0px; }
+
+.details-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+
+.details-header h1 { font-size: 28px; margin-bottom: 6px; }
+
+.wishlist-btn-lg { border: 1.5px solid var(--primary); background: rgb(255, 255, 255); color: var(--primary); padding: 10px 18px; border-radius: 8px; font-weight: 600; }
+
+.wishlist-btn-lg.active { background: var(--primary); color: white; }
+
+.gallery { margin-bottom: 30px; }
+
+.gallery-main img { width: 100%; height: 380px; object-fit: cover; border-radius: 14px; }
+
+.gallery-thumbs { display: flex; gap: 10px; margin-top: 10px; }
+
+.gallery-thumbs img { width: 90px; height: 64px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.6; border: 2px solid transparent; }
+
+.gallery-thumbs img.active { opacity: 1; border-color: var(--primary); }
+
+.details-layout { display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
+
+.details-block { margin-bottom: 30px; }
+
+.details-block h2 { font-size: 20px; margin-bottom: 12px; }
+
+.details-block p { color: var(--text-light); line-height: 1.6; }
+
+.amenities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+.amenity-item { font-size: 14px; color: var(--text); }
+
+.room-list { display: flex; flex-direction: column; gap: 12px; }
+
+.room-option { display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; background: rgb(255, 255, 255); text-align: left; }
+
+.room-option.active { border-color: var(--primary); background: rgb(255, 247, 248); }
+
+.room-option h4 { margin-bottom: 4px; }
+
+.room-beds { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+
+.room-perks { font-size: 12px; color: var(--text-light); }
+
+.room-price { font-size: 18px; font-weight: 800; white-space: nowrap; }
+
+.room-price span { font-size: 12px; font-weight: 400; color: var(--text-light); }
+
+.booking-card { background: rgb(255, 255, 255); border-radius: 14px; padding: 20px; box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 10px; height: fit-content; position: sticky; top: 90px; }
+
+.booking-card h3 { margin-bottom: 14px; }
+
+.booking-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0px; font-size: 14px; }
+
+.booking-row span { color: var(--text-light); }
+
+.total-row { font-size: 17px; font-weight: 800; }
+
+.summary-hotel { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+.summary-hotel img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+
+.checkout-layout { display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
+
+.checkout-form { background: rgb(255, 255, 255); border-radius: 14px; padding: 24px; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px; }
+
+.checkout-form h3 { margin-bottom: 16px; }
+
+.form-group { margin-bottom: 16px; }
+
+.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+
+.form-group input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+
+.form-error { color: var(--primary); font-size: 13px; margin-bottom: 12px; }
+
+.payment-note { background: rgb(245, 246, 250); border-radius: 8px; padding: 12px; font-size: 13px; color: var(--text-light); margin-bottom: 16px; display: flex; gap: 8px; }
+
+.confirmation-page { display: flex; justify-content: center; }
+
+.confirmation-card { background: rgb(255, 255, 255); border-radius: 16px; padding: 40px; max-width: 520px; text-align: center; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 16px; }
+
+.success-icon { width: 60px; height: 60px; background: var(--success); color: white; border-radius: 50%; font-size: 30px; display: flex; align-items: center; justify-content: center; margin: 0px auto 16px; }
+
+.confirmation-details { margin: 24px 0px; text-align: left; border-top: 1px solid var(--border); padding-top: 16px; }
+
+.confirmation-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.booking-list { display: flex; flex-direction: column; gap: 16px; }
+
+.booking-item { background: rgb(255, 255, 255); border-radius: 14px; display: flex; gap: 16px; padding: 16px; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px; }
+
+.booking-item img { width: 130px; height: 110px; object-fit: cover; border-radius: 10px; }
+
+.booking-item-body { flex: 1 1 0%; }
+
+.booking-item-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+.status-pill { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+
+.status-confirmed { background: rgb(230, 247, 238); color: var(--success); }
+
+.status-cancelled { background: rgb(253, 236, 236); color: rgb(212, 63, 63); }
+
+.booking-item-info { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--text-light); margin: 8px 0px; }
+
+.booking-item-bottom { display: flex; align-items: center; justify-content: space-between; }
+
+.auth-page { display: flex; justify-content: center; }
+
+.auth-card { background: rgb(255, 255, 255); border-radius: 16px; padding: 36px; max-width: 420px; width: 100%; box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 16px; }
+
+.auth-card h1 { font-size: 22px; margin-bottom: 6px; }
+
+.auth-card > p { color: var(--text-light); margin-bottom: 20px; font-size: 14px; }
+
+.auth-note { margin-top: 14px; font-size: 12px; color: var(--text-light); text-align: center; }
+
+.empty-page { text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+.footer { background: var(--secondary); color: rgb(209, 213, 219); margin-top: 40px; }
+
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 30px; padding: 44px 20px; }
+
+.footer-brand { color: white; margin-bottom: 10px; }
+
+.footer-text { font-size: 13px; line-height: 1.6; }
+
+.footer-col h4 { color: white; margin-bottom: 12px; font-size: 15px; }
+
+.footer-col a { display: block; font-size: 13px; margin-bottom: 8px; color: rgb(169, 173, 193); }
+
+.footer-bottom { border-top: 1px solid rgb(44, 44, 70); text-align: center; padding: 16px; font-size: 12px; }
+
+@media (max-width: 1024px) {
+  .hotel-grid { grid-template-columns: repeat(2, 1fr); }
+  .listings-grid { grid-template-columns: repeat(2, 1fr); }
+  .listings-layout { grid-template-columns: 1fr; }
+  .filters-panel { order: 2; }
+  .details-layout, .checkout-layout { grid-template-columns: 1fr; }
+  .booking-card { position: static; }
+  .city-grid { grid-template-columns: repeat(4, 1fr); }
+  .perks-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .search-bar { grid-template-columns: 1fr 1fr; }
+  .nav-links { position: fixed; top: 68px; left: 0px; right: 0px; background: white; flex-direction: column; align-items: flex-start; padding: 16px 20px; gap: 16px; border-bottom: 1px solid var(--border); display: none; }
+  .nav-links.open { display: flex; }
+  .hamburger { display: flex; }
+  .hotel-grid, .listings-grid { grid-template-columns: 1fr; }
+  .city-grid { grid-template-columns: repeat(3, 1fr); }
+  .perks-grid { grid-template-columns: 1fr; }
+  .hero-inner h1 { font-size: 26px; }
+}
+
+
+* { margin: 0px; padding: 0px; box-sizing: border-box; }
+
+:root { --primary: #ee2c5b; --primary-dark: #c81f47; --secondary: #1a1a2e; --bg: #f5f6fa; --card-bg: #ffffff; --text: #1a1a2e; --text-light: #6b7280; --border: #e5e7eb; --success: #17a558; }
+
+html, body { font-family: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+
+a { text-decoration: none; color: inherit; }
+
+button { font-family: inherit; cursor: pointer; }
+
+img { display: block; max-width: 100%; }
+
+.container { max-width: 1180px; margin: 0px auto; padding: 0px 20px; }
+
+input, select { font-family: inherit; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+
+::-webkit-scrollbar-thumb { background: rgb(204, 204, 204); border-radius: 4px; }
+.se-modal-backdrop{position:fixed;inset:0;background:rgba(26,26,46,.55);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 12px;z-index:1000}
+.se-modal-backdrop.open{display:flex}
+.se-modal{background:#fff;border-radius:14px;width:100%;max-width:520px;padding:22px;position:relative;margin:auto}
+.se-close{position:absolute;top:10px;right:12px;border:0;background:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--text-light)}
+.se-modal h2{font-size:1.2rem;font-weight:700;margin:0 28px 4px 0}
+.se-sub{font-size:.85rem;color:var(--text-light);margin:0 0 16px}
+.se-steps{display:flex;gap:6px;margin:0 0 16px}
+.se-steps span{flex:1;height:4px;border-radius:2px;background:var(--border)}
+.se-steps span.on{background:var(--primary)}
+.se-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.se-field label{font-size:.8rem;font-weight:600}
+.se-field input,.se-field select{padding:11px 12px;border:1px solid var(--border);border-radius:8px;font:inherit;font-size:.92rem}
+.se-field input:focus,.se-field select:focus{outline:2px solid var(--primary);outline-offset:1px}
+.se-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.se-summary{background:var(--bg);border-radius:10px;padding:12px 14px;margin:6px 0 16px;font-size:.88rem}
+.se-summary div{display:flex;justify-content:space-between;padding:3px 0}
+.se-summary .total{border-top:1px solid var(--border);margin-top:6px;padding-top:8px;font-weight:700;font-size:1rem}
+.se-btn{width:100%;padding:13px;border:0;border-radius:8px;background:var(--primary);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.se-btn:hover{background:var(--primary-dark)}
+.se-btn:disabled{opacity:.6;cursor:default}
+.se-link{background:none;border:0;color:var(--text-light);font:inherit;font-size:.82rem;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px}
+.se-tabs{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
+.se-tabs button{flex:1;padding:10px;border:0;background:transparent;font:inherit;font-size:.85rem;font-weight:500;color:var(--text-light);cursor:pointer}
+.se-tabs button.on{background:var(--secondary);color:#fff}
+.se-apps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.se-app{padding:12px;border:1px solid var(--border);border-radius:8px;background:#fff;font:inherit;font-size:.86rem;font-weight:500;cursor:pointer}
+.se-app:hover{border-color:var(--primary)}
+.se-hint{font-size:.78rem;color:var(--text-light);margin:8px 0 0;line-height:1.5}
+.se-payto{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:10px 12px;font-size:.85rem;margin-bottom:14px}
+.se-payto button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:5px 10px;font:inherit;font-size:.78rem;cursor:pointer}
+.se-error{color:#b42318;font-size:.82rem;margin:10px 0 0}
+.se-ok{text-align:center;padding:10px 0}
+.se-ok .tick{width:56px;height:56px;border-radius:50%;background:#e8f6ee;color:var(--success);font-size:1.8rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.se-ok dl{text-align:left;background:var(--bg);border-radius:10px;padding:12px 14px;font-size:.88rem;margin:14px 0}
+.se-ok dl div{display:flex;justify-content:space-between;padding:3px 0;gap:10px}
+.se-ok dt{color:var(--text-light)}
+.se-ok dd{margin:0;font-weight:600;text-align:right}
+.se-book{list-style:none;padding:0;margin:0}
+.se-book li{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;font-size:.88rem}
+.se-book b{display:block;margin-bottom:2px}
+
+</style></head>
+<body>
+
+    <div id="root"><div class="app-shell"><header class="navbar"><div class="container navbar-inner"><a class="brand" href="#"><span class="brand-mark">Stay</span>Easy</a><nav class="nav-links "><a href="#">Explore Stays</a><a href="#">Wishlist </a><a href="#">My Bookings </a><button class="btn btn-primary btn-sm" type="button">Login / Signup</button></nav><button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div></header><main><div><section class="hero"><div class="container hero-inner"><h1>Find your perfect stay, at the perfect price</h1><p>Verified rooms, quality-checked hotels, and hassle-free booking across India.</p><form class="search-bar "><div class="search-field"><label>City</label><select><option value="Delhi">Delhi</option><option value="Mumbai">Mumbai</option><option value="Bengaluru">Bengaluru</option><option value="Goa">Goa</option><option value="Jaipur">Jaipur</option><option value="Manali">Manali</option><option value="Udaipur">Udaipur</option><option value="Pune">Pune</option></select></div><div class="search-field"><label>Check-in</label><input type="date" value="2026-09-29"></div><div class="search-field"><label>Check-out</label><input type="date" value="2026-09-30"></div><div class="search-field"><label>Guests</label><select><option value="1">1 Guest</option><option value="2">2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5 Guests</option><option value="6">6 Guests</option></select></div><div class="search-field"><label>Rooms</label><select><option value="1">1 Room</option><option value="2">2 Rooms</option><option value="3">3 Rooms</option><option value="4">4 Rooms</option></select></div><button type="submit" class="btn btn-primary search-btn">Search</button></form></div></section><section class="container section"><h2 class="section-title">Explore top cities</h2><div class="city-grid"><button class="city-card"><img src="https://picsum.photos/seed/Delhi0/300/220" alt="Delhi"><span>Delhi</span></button><button class="city-card"><img src="https://picsum.photos/seed/Mumbai1/300/220" alt="Mumbai"><span>Mumbai</span></button><button class="city-card"><img src="https://picsum.photos/seed/Bengaluru2/300/220" alt="Bengaluru"><span>Bengaluru</span></button><button class="city-card"><img src="https://picsum.photos/seed/Goa3/300/220" alt="Goa"><span>Goa</span></button><button class="city-card"><img src="https://picsum.photos/seed/Jaipur4/300/220" alt="Jaipur"><span>Jaipur</span></button><button class="city-card"><img src="https://picsum.photos/seed/Manali5/300/220" alt="Manali"><span>Manali</span></button><button class="city-card"><img src="https://picsum.photos/seed/Udaipur6/300/220" alt="Udaipur"><span>Udaipur</span></button><button class="city-card"><img src="https://picsum.photos/seed/Pune7/300/220" alt="Pune"><span>Pune</span></button></div></section><section class="container section"><div class="section-header-row"><h2 class="section-title">Top rated stays</h2><a class="see-all" href="#">See all →</a></div><div class="hotel-grid"><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Blue Orchid Mumbai 2" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">14% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Blue Orchid Mumbai 2</h3><span class="rating-pill">4.9 <span class="star">★</span></span></div><p class="hotel-card-address">16 MG Road, Near Mumbai Central, Mumbai</p><div class="hotel-card-tags"><span class="tag">Villa</span><span class="tag">Free Cancellation</span><span class="tag tag-highlight">Value Stay</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹2599</span><span class="price-new">₹2240</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">775 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="The Wanderer Delhi 4" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">30% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>The Wanderer Delhi 4</h3><span class="rating-pill">4.8 <span class="star">★</span></span></div><p class="hotel-card-address">24 MG Road, Near Delhi Central, Delhi</p><div class="hotel-card-tags"><span class="tag">Hotel</span><span class="tag">Non-refundable</span><span class="tag tag-highlight">Top Rated</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹2099</span><span class="price-new">₹1470</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">570 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Royal Stay Udaipur 3" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">23% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Royal Stay Udaipur 3</h3><span class="rating-pill">4.8 <span class="star">★</span></span></div><p class="hotel-card-address">20 MG Road, Near Udaipur Central, Udaipur</p><div class="hotel-card-tags"><span class="tag">Guest House</span><span class="tag">Non-refundable</span><span class="tag tag-highlight">Top Rated</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹999</span><span class="price-new">₹770</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">113 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Sunrise Residency Pune" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">37% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Sunrise Residency Pune</h3><span class="rating-pill">4.8 <span class="star">★</span></span></div><p class="hotel-card-address">12 MG Road, Near Pune Central, Pune</p><div class="hotel-card-tags"><span class="tag">Hotel</span><span class="tag">Free Cancellation</span><span class="tag tag-highlight">Value Stay</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹1499</span><span class="price-new">₹940</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">318 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Metro Suites Pune 5" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">21% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Metro Suites Pune 5</h3><span class="rating-pill">4.8 <span class="star">★</span></span></div><p class="hotel-card-address">28 MG Road, Near Pune Central, Pune</p><div class="hotel-card-tags"><span class="tag">Villa</span><span class="tag">Non-refundable</span><span class="tag tag-highlight">Top Rated</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹2099</span><span class="price-new">₹1660</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">522 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Royal Stay Jaipur 3" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">12% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Royal Stay Jaipur 3</h3><span class="rating-pill">4.7 <span class="star">★</span></span></div><p class="hotel-card-address">20 MG Road, Near Jaipur Central, Jaipur</p><div class="hotel-card-tags"><span class="tag">Guest House</span><span class="tag">Free Cancellation</span><span class="tag tag-highlight">Value Stay</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹1299</span><span class="price-new">₹1140</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">398 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Sunrise Residency Manali" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">26% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Sunrise Residency Manali</h3><span class="rating-pill">4.7 <span class="star">★</span></span></div><p class="hotel-card-address">12 MG Road, Near Manali Central, Manali</p><div class="hotel-card-tags"><span class="tag">Hotel</span><span class="tag">Free Cancellation</span><span class="tag tag-highlight">Top Rated</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹1899</span><span class="price-new">₹1410</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">603 reviews</span></div></a></div><div class="hotel-card"><div class="hotel-card-img-wrap"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&amp;w=800&amp;auto=format&amp;fit=crop" alt="Metro Suites Manali 5" loading="lazy"><button class="wishlist-btn " aria-label="Toggle wishlist">♡</button><span class="discount-tag">39% OFF</span></div><a class="hotel-card-body" href="#"><div class="hotel-card-top"><h3>Metro Suites Manali 5</h3><span class="rating-pill">4.7 <span class="star">★</span></span></div><p class="hotel-card-address">28 MG Road, Near Manali Central, Manali</p><div class="hotel-card-tags"><span class="tag">Villa</span><span class="tag">Free Cancellation</span><span class="tag tag-highlight">Value Stay</span></div><div class="hotel-card-bottom"><div class="price-block"><span class="price-old">₹2399</span><span class="price-new">₹1460</span><span class="price-note">+ taxes / night</span></div><span class="reviews-note">808 reviews</span></div></a></div></div></section><section class="container section perks-section"><h2 class="section-title">Why StayEasy?</h2><div class="perks-grid"><div class="perk-card"><span class="perk-emoji">✅</span><h4>Verified Rooms</h4><p>Every listing is quality-checked for hygiene and comfort.</p></div><div class="perk-card"><span class="perk-emoji">💸</span><h4>Best Price Guarantee</h4><p>Find a lower price? We will match it, guaranteed.</p></div><div class="perk-card"><span class="perk-emoji">⚡</span><h4>Instant Booking</h4><p>Book in under a minute with instant confirmation.</p></div><div class="perk-card"><span class="perk-emoji">📞</span><h4>24/7 Support</h4><p>Our team is always available to help with your stay.</p></div></div></section></div></main><footer class="footer"><div class="container footer-inner"><div class="footer-col"><div class="brand footer-brand"><span class="brand-mark">Stay</span>Easy</div><p class="footer-text">Budget-friendly, quality-checked rooms across India. Book in seconds, stay with confidence.</p></div><div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Press</a></div><div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Cancellation Policy</a><a href="#">My Bookings</a></div><div class="footer-col"><h4>Partner With Us</h4><a href="#">List Your Property</a><a href="#">Become a Partner</a></div></div><div class="footer-bottom">© 2026 StayEasy. All rights reserved.</div></footer></div></div>
+    
+  
+
+
+<script>
+/* ============ StayEasy: booking + UPI payment ============ */
+/* CHANGE THESE TWO LINES to your own receiving UPI ID and name. */
+var CONFIG = { merchantVpa: "yourupi@bank", merchantName: "StayEasy", taxRate: 0.12 };
+
+/*
+ * Payment verification hook.
+ * In production this MUST call your server, which checks the payment with
+ * your gateway (Razorpay / Cashfree / PhonePe PG) and returns { ok: true }
+ * only when the money has actually been received.
+ * The demo below only checks the UTR format, so it does NOT prove payment.
+ */
+function verifyPayment(payload) {
+  return new Promise(function (resolve) {
+    setTimeout(function () { resolve({ ok: /^\d{12}$/.test(payload.utr || "") || payload.method === "collect" }); }, 700);
+  });
+}
+
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var inr = function (n) { return "\u20B9" + Math.round(n).toLocaleString("en-IN"); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
+  var UPI_ID = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/;
+
+  var backdrop = document.createElement("div");
+  backdrop.className = "se-modal-backdrop";
+  backdrop.innerHTML = '<div class="se-modal" role="dialog" aria-modal="true"><button class="se-close" aria-label="Close">&times;</button><div id="se-body"></div></div>';
+  document.body.appendChild(backdrop);
+  var body = $("#se-body", backdrop);
+  var st = null;
+
+  function open() { backdrop.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function close() { backdrop.classList.remove("open"); document.body.style.overflow = ""; }
+  $(".se-close", backdrop).onclick = close;
+  backdrop.addEventListener("mousedown", function (e) { if (e.target === backdrop) close(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+
+  function searchValues() {
+    var f = $(".search-bar"), ins = f ? f.querySelectorAll("input[type=date]") : [], sel = f ? f.querySelectorAll("select") : [];
+    return {
+      checkIn: ins[0] ? ins[0].value : "", checkOut: ins[1] ? ins[1].value : "",
+      guests: sel[1] ? sel[1].value : "1", rooms: sel[2] ? sel[2].value : "1"
+    };
+  }
+  function nights(a, b) { var d = (new Date(b) - new Date(a)) / 864e5; return isFinite(d) ? Math.round(d) : 0; }
+  function stepBar(n) { return '<div class="se-steps"><span class="on"></span><span class="' + (n >= 2 ? "on" : "") + '"></span><span class="' + (n >= 3 ? "on" : "") + '"></span></div>'; }
+  function totals() {
+    var base = st.price * st.nights * st.rooms, tax = base * CONFIG.taxRate;
+    return { base: base, tax: tax, total: base + tax };
+  }
+
+  /* Step 1: guest details */
+  function stepDetails(err) {
+    var t = totals();
+    body.innerHTML = stepBar(1) +
+      "<h2>" + esc(st.hotel) + "</h2><p class='se-sub'>" + esc(st.address) + "</p>" +
+      "<div class='se-row'><div class='se-field'><label for='se-in'>Check-in</label><input id='se-in' type='date' value='" + st.checkIn + "'></div>" +
+      "<div class='se-field'><label for='se-out'>Check-out</label><input id='se-out' type='date' value='" + st.checkOut + "'></div></div>" +
+      "<div class='se-row'><div class='se-field'><label for='se-g'>Guests</label><select id='se-g'>" + [1,2,3,4,5,6].map(function (n) { return "<option " + (n == st.guests ? "selected" : "") + ">" + n + "</option>"; }).join("") + "</select></div>" +
+      "<div class='se-field'><label for='se-r'>Rooms</label><select id='se-r'>" + [1,2,3,4].map(function (n) { return "<option " + (n == st.rooms ? "selected" : "") + ">" + n + "</option>"; }).join("") + "</select></div></div>" +
+      "<div class='se-field'><label for='se-name'>Full name</label><input id='se-name' autocomplete='name' value='" + esc(st.name || "") + "'></div>" +
+      "<div class='se-row'><div class='se-field'><label for='se-phone'>Mobile number</label><input id='se-phone' inputmode='numeric' maxlength='10' autocomplete='tel-national' value='" + esc(st.phone || "") + "'></div>" +
+      "<div class='se-field'><label for='se-mail'>Email</label><input id='se-mail' type='email' autocomplete='email' value='" + esc(st.email || "") + "'></div></div>" +
+      "<div class='se-summary' id='se-sum'></div>" +
+      "<button class='se-btn' id='se-next'>Continue to payment</button>" +
+      "<p class='se-error' id='se-err' role='alert'>" + (err ? esc(err) : "") + "</p>";
+    function refresh() {
+      st.checkIn = $("#se-in").value; st.checkOut = $("#se-out").value;
+      st.guests = $("#se-g").value; st.rooms = +$("#se-r").value;
+      st.nights = nights(st.checkIn, st.checkOut);
+      var t = totals();
+      $("#se-sum").innerHTML =
+        "<div><span>" + inr(st.price) + " x " + st.nights + " night" + (st.nights == 1 ? "" : "s") + " x " + st.rooms + " room" + (st.rooms == 1 ? "" : "s") + "</span><span>" + inr(t.base) + "</span></div>" +
+        "<div><span>Taxes & fees (" + Math.round(CONFIG.taxRate * 100) + "%)</span><span>" + inr(t.tax) + "</span></div>" +
+        "<div class='total'><span>Amount to pay now</span><span>" + inr(t.total) + "</span></div>";
+    }
+    ["#se-in", "#se-out", "#se-g", "#se-r"].forEach(function (s) { $(s).addEventListener("change", refresh); });
+    refresh();
+    $("#se-next").onclick = function () {
+      refresh();
+      st.name = $("#se-name").value.trim(); st.phone = $("#se-phone").value.trim(); st.email = $("#se-mail").value.trim();
+      var e = "";
+      if (st.nights < 1) e = "Check-out must be after check-in.";
+      else if (st.name.length < 2) e = "Enter the guest's full name.";
+      else if (!/^[6-9]\d{9}$/.test(st.phone)) e = "Enter a valid 10-digit mobile number.";
+      else if (!/^\S+@\S+\.\S+$/.test(st.email)) e = "Enter a valid email address.";
+      if (e) { $("#se-err").textContent = e; return; }
+      st.bookingId = st.bookingId || "SE" + Date.now().toString(36).toUpperCase().slice(-6);
+      stepPay();
+    };
+  }
+
+  /* Step 2: choose UPI method */
+  function stepPay(err, mode) {
+    mode = mode || "app";
+    var t = totals();
+    body.innerHTML = stepBar(2) +
+      "<h2>Pay " + inr(t.total) + " with UPI</h2>" +
+      "<p class='se-sub'>Booking " + esc(st.bookingId) + " is confirmed only after your payment is received.</p>" +
+      "<div class='se-tabs'><button data-m='app' class='" + (mode == "app" ? "on" : "") + "'>Open a UPI app</button><button data-m='id' class='" + (mode == "id" ? "on" : "") + "'>Enter UPI ID</button></div>" +
+      (mode == "app"
+        ? "<div class='se-apps'>" +
+          [["Google Pay", "tez://upi/pay"], ["PhonePe", "phonepe://pay"], ["Paytm", "paytmmp://pay"], ["Other UPI app", "upi://pay"]].map(function (a) { return "<button class='se-app' data-s='" + a[1] + "'>" + a[0] + "</button>"; }).join("") +
+          "</div><p class='se-hint'>UPI apps open on phones. On a computer, use \"Enter UPI ID\" and approve the request on your phone.</p>"
+        : "<div class='se-field'><label for='se-vpa'>Your UPI ID</label><input id='se-vpa' placeholder='name@okhdfcbank' autocomplete='off' value='" + esc(st.vpa || "") + "'></div><button class='se-btn' id='se-collect'>Send payment request</button>") +
+      "<p class='se-error' id='se-err' role='alert'>" + (err ? esc(err) : "") + "</p>" +
+      "<button class='se-link' id='se-back'>Back to details</button>";
+    body.querySelectorAll(".se-tabs button").forEach(function (b) { b.onclick = function () { stepPay("", b.dataset.m); }; });
+    body.querySelectorAll(".se-app").forEach(function (b) {
+      b.onclick = function () {
+        var p = new URLSearchParams({ pa: CONFIG.merchantVpa, pn: CONFIG.merchantName, am: t.total.toFixed(2), cu: "INR", tn: ("StayEasy " + st.bookingId).slice(0, 80), tr: st.bookingId });
+        window.location.href = b.dataset.s + "?" + p.toString();
+        stepUtr();
+      };
+    });
+    var c = $("#se-collect");
+    if (c) c.onclick = function () {
+      st.vpa = $("#se-vpa").value.trim();
+      if (!UPI_ID.test(st.vpa)) { $("#se-err").textContent = "Enter a valid UPI ID, like name@bank."; return; }
+      st.method = "collect"; stepUtr();
+    };
+    $("#se-back").onclick = function () { stepDetails(); };
+  }
+
+  /* Step 3: reference number, then verify */
+  function stepUtr(err) {
+    var t = totals();
+    body.innerHTML = stepBar(3) +
+      "<h2>Confirm your payment</h2>" +
+      "<p class='se-sub'>" + (st.method == "collect" ? "Approve the request sent to " + esc(st.vpa) + " in your UPI app." : "Complete the payment in your UPI app.") + " Then enter the 12-digit UTR / reference number shown there.</p>" +
+      "<div class='se-payto'><span>Pay to <b>" + esc(CONFIG.merchantVpa) + "</b> &middot; " + inr(t.total) + "</span><button id='se-copy'>Copy UPI ID</button></div>" +
+      "<div class='se-field'><label for='se-utr'>UTR / reference number</label><input id='se-utr' inputmode='numeric' maxlength='12' placeholder='123456789012'></div>" +
+      "<button class='se-btn' id='se-verify'>Confirm payment</button>" +
+      "<p class='se-error' id='se-err' role='alert'>" + (err ? esc(err) : "") + "</p>" +
+      "<button class='se-link' id='se-back'>Choose a different way to pay</button>";
+    $("#se-utr").addEventListener("input", function (e) { e.target.value = e.target.value.replace(/\D/g, ""); });
+    $("#se-copy").onclick = function () { if (navigator.clipboard) navigator.clipboard.writeText(CONFIG.merchantVpa); this.textContent = "Copied"; };
+    $("#se-back").onclick = function () { stepPay(); };
+    $("#se-verify").onclick = function () {
+      var utr = $("#se-utr").value;
+      if (!/^\d{12}$/.test(utr)) { $("#se-err").textContent = "The UTR / reference number is 12 digits."; return; }
+      var btn = this; btn.disabled = true; btn.textContent = "Verifying payment...";
+      verifyPayment({ bookingId: st.bookingId, amount: t.total, utr: utr, method: st.method || "intent", upiId: st.vpa }).then(function (r) {
+        if (!r || !r.ok) { stepUtr("We could not verify this payment yet. Check the number and try again."); return; }
+        st.utr = utr; done(t);
+      });
+    };
+  }
+
+  function saveBooking(t) {
+    try {
+      var all = JSON.parse(localStorage.getItem("stayeasy_bookings") || "[]");
+      all.unshift({ id: st.bookingId, hotel: st.hotel, checkIn: st.checkIn, checkOut: st.checkOut, rooms: st.rooms, guests: st.guests, total: t.total, utr: st.utr, name: st.name });
+      localStorage.setItem("stayeasy_bookings", JSON.stringify(all));
+    } catch (e) {}
+  }
+
+  /* Step 4: confirmed (only after verifyPayment says ok) */
+  function done(t) {
+    saveBooking(t);
+    body.innerHTML = "<div class='se-ok'><div class='tick'>&#10003;</div><h2 style='margin:0'>Booking confirmed</h2><p class='se-sub' style='margin-top:4px'>Payment received. A confirmation goes to " + esc(st.email) + ".</p>" +
+      "<dl><div><dt>Booking ID</dt><dd>" + esc(st.bookingId) + "</dd></div><div><dt>Stay</dt><dd>" + esc(st.hotel) + "</dd></div>" +
+      "<div><dt>Dates</dt><dd>" + esc(st.checkIn) + " to " + esc(st.checkOut) + "</dd></div>" +
+      "<div><dt>Rooms / guests</dt><dd>" + st.rooms + " / " + esc(st.guests) + "</dd></div>" +
+      "<div><dt>Paid</dt><dd>" + inr(t.total) + "</dd></div><div><dt>UTR</dt><dd>" + esc(st.utr) + "</dd></div></dl>" +
+      "<button class='se-btn' id='se-fin'>Done</button></div>";
+    $("#se-fin").onclick = close;
+  }
+
+  function myBookings() {
+    var all = []; try { all = JSON.parse(localStorage.getItem("stayeasy_bookings") || "[]"); } catch (e) {}
+    body.innerHTML = "<h2>My Bookings</h2><p class='se-sub'>" + (all.length ? "Your paid bookings on this device." : "No bookings yet. Pick a stay and pay with UPI to book.") + "</p>" +
+      "<ul class='se-book'>" + all.map(function (b) {
+        return "<li><b>" + esc(b.hotel) + "</b>" + esc(b.checkIn) + " to " + esc(b.checkOut) + " &middot; " + b.rooms + " room(s)<br>Paid " + inr(b.total) + " &middot; ID " + esc(b.id) + "</li>";
+      }).join("") + "</ul>";
+    open();
+  }
+
+  /* Wire up the page */
+  document.addEventListener("click", function (e) {
+    var card = e.target.closest(".hotel-card");
+    var wl = e.target.closest(".wishlist-btn");
+    if (wl) { e.preventDefault(); wl.textContent = wl.textContent.trim() === "\u2661" ? "\u2665" : "\u2661"; wl.style.color = wl.textContent === "\u2665" ? "#ee2c5b" : ""; return; }
+    if (card && e.target.closest("a")) {
+      e.preventDefault();
+      var sv = searchValues();
+      st = {
+        hotel: card.querySelector("h3").textContent.trim(),
+        address: (card.querySelector(".hotel-card-address") || {}).textContent || "",
+        price: parseInt(card.querySelector(".price-new").textContent.replace(/\D/g, ""), 10),
+        checkIn: sv.checkIn, checkOut: sv.checkOut, guests: sv.guests, rooms: +sv.rooms, nights: nights(sv.checkIn, sv.checkOut)
+      };
+      stepDetails(); open(); return;
+    }
+    var nav = e.target.closest(".nav-links a");
+    if (nav) { e.preventDefault(); if (/bookings/i.test(nav.textContent)) myBookings(); else document.querySelector(".hotel-grid").scrollIntoView({ behavior: "smooth" }); return; }
+    var a = e.target.closest("a[href='#']"); if (a) e.preventDefault();
+  });
+  var sf = $(".search-bar"); if (sf) sf.addEventListener("submit", function (e) { e.preventDefault(); $(".hotel-grid").scrollIntoView({ behavior: "smooth" }); });
+})();
+
+</script>
+</body></html>
